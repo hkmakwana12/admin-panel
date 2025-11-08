@@ -17,13 +17,13 @@ import {
   Spinner
 } from '@radix-ui/themes';
 import {
-  EyeOpenIcon,
-  EyeClosedIcon,
-  LockClosedIcon,
-  EnvelopeClosedIcon,
-  ExclamationTriangleIcon,
-  RocketIcon
-} from '@radix-ui/react-icons';
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  AlertTriangle,
+  Rocket,
+} from 'lucide-react';
 import { useAuthStore } from '../stores/auth-store';
 import { useMutation } from '@tanstack/react-query';
 import { authService } from '../services/auth-service';
@@ -46,6 +46,7 @@ export function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
   });
@@ -58,8 +59,7 @@ export function LoginPage() {
       navigate('/');
     },
     onError: (error: any) => {
-      const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Login failed. Please try again.';
-      setError(errorMessage);
+      setError(error.message || 'Login failed. Please try again.');
     },
   });
 
@@ -70,12 +70,9 @@ export function LoginPage() {
 
   // Demo credentials for testing
   const fillDemoCredentials = () => {
-    const demoEmail = 'admin@example.com';
-    const demoPassword = 'password';
-
-    // This would typically set form values, but for simplicity we'll log them
-    console.log('Demo credentials:', { email: demoEmail, password: demoPassword });
-    setError('Use the demo credentials in your form inputs');
+    setValue('email', 'admin@example.com');
+    setValue('password', 'password');
+    setError('');
   };
 
   return (
@@ -85,8 +82,6 @@ export function LoginPage() {
       justify="center"
       style={{
         backgroundColor: 'var(--gray-1)',
-        backgroundImage: 'radial-gradient(var(--gray-5) 1px, transparent 1px)',
-        backgroundSize: '20px 20px'
       }}
       p="4"
     >
@@ -107,14 +102,14 @@ export function LoginPage() {
                   justifyContent: 'center'
                 }}
               >
-                <RocketIcon width="24" height="24" />
+                <Rocket size={24} />
               </Box>
               <Heading size="7" weight="bold">
                 Admin Panel
               </Heading>
             </Flex>
-            <Text size="3" color="gray" align="center">
-              Sign in to access your dashboard and manage your platform
+            <Text as="div" size="3" color="gray" align="center">
+              Sign in to access your dashboard
             </Text>
           </Flex>
 
@@ -124,23 +119,24 @@ export function LoginPage() {
               {/* Demo Credentials Callout */}
               <Callout.Root color="blue">
                 <Callout.Icon>
-                  <RocketIcon />
+                  <Rocket size={16} />
                 </Callout.Icon>
                 <Callout.Text>
-                  <Flex direction="column" gap="1">
-                    <Text weight="bold">Demo Access</Text>
-                    <Text size="1">
-                      Use admin@example.com / password to test the login
-                    </Text>
-                    <Button
-                      size="1"
-                      variant="ghost"
-                      onClick={fillDemoCredentials}
-                      style={{ marginTop: '4px' }}
-                    >
-                      Auto-fill demo credentials
-                    </Button>
-                  </Flex>
+                  <Text weight="bold">Demo Access</Text>
+                  <Text size="1">
+                    Use admin@example.com / password to test
+                  </Text>
+                  <Button
+                    size="1"
+                    variant="ghost"
+                    onClick={fillDemoCredentials}
+                    style={{
+                      marginTop: '4px',
+                      display: 'block'
+                    }}
+                  >
+                    Auto-fill demo credentials
+                  </Button>
                 </Callout.Text>
               </Callout.Root>
 
@@ -149,7 +145,7 @@ export function LoginPage() {
                   {error && (
                     <Callout.Root color="red" size="1">
                       <Callout.Icon>
-                        <ExclamationTriangleIcon />
+                        <AlertTriangle size={16} />
                       </Callout.Icon>
                       <Callout.Text>
                         {error}
@@ -160,22 +156,22 @@ export function LoginPage() {
                   {/* Email Field */}
                   <Flex direction="column" gap="1">
                     <Text as="label" size="2" weight="bold" htmlFor="email">
-                      Email Address
+                      Email
                     </Text>
                     <TextField.Root
                       id="email"
                       type="email"
-                      placeholder="Enter your email address"
+                      placeholder="admin@example.com"
                       size="3"
                       {...register('email')}
                       disabled={loginMutation.isPending}
                     >
                       <TextField.Slot>
-                        <EnvelopeClosedIcon />
+                        <Mail size={16} />
                       </TextField.Slot>
                     </TextField.Root>
                     {errors.email && (
-                      <Text size="1" color="red" style={{ marginTop: '4px' }}>
+                      <Text as="p" size="1" color="red" style={{ marginTop: '4px' }}>
                         {errors.email.message}
                       </Text>
                     )}
@@ -189,13 +185,13 @@ export function LoginPage() {
                     <TextField.Root
                       id="password"
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Enter your password"
+                      placeholder="password"
                       size="3"
                       {...register('password')}
                       disabled={loginMutation.isPending}
                     >
                       <TextField.Slot>
-                        <LockClosedIcon />
+                        <Lock size={16} />
                       </TextField.Slot>
                       <TextField.Slot>
                         <Button
@@ -205,25 +201,15 @@ export function LoginPage() {
                           onClick={() => setShowPassword(!showPassword)}
                           style={{ cursor: 'pointer' }}
                         >
-                          {showPassword ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                          {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                         </Button>
                       </TextField.Slot>
                     </TextField.Root>
                     {errors.password && (
-                      <Text size="1" color="red" style={{ marginTop: '4px' }}>
+                      <Text as="p" size="1" color="red" style={{ marginTop: '4px' }}>
                         {errors.password.message}
                       </Text>
                     )}
-                  </Flex>
-
-                  {/* Remember Me & Forgot Password */}
-                  <Flex justify="between" align="center">
-                    <Flex align="center" gap="2">
-                      {/* You can add a checkbox here for "Remember me" if needed */}
-                    </Flex>
-                    <Button type="button" variant="ghost" size="1">
-                      Forgot password?
-                    </Button>
                   </Flex>
 
                   {/* Submit Button */}
@@ -231,7 +217,7 @@ export function LoginPage() {
                     type="submit"
                     size="3"
                     disabled={loginMutation.isPending}
-                    style={{ width: '100%' }}
+                    style={{ width: '100%', marginTop: '8px' }}
                   >
                     {loginMutation.isPending ? (
                       <Flex align="center" gap="2">
@@ -239,27 +225,20 @@ export function LoginPage() {
                         Signing in...
                       </Flex>
                     ) : (
-                      'Sign in to your account'
+                      'Sign In'
                     )}
                   </Button>
                 </Flex>
               </form>
-
-              {/* Additional Help Text */}
-              <Box>
-                <Text size="1" color="gray" align="center">
-                  By signing in, you agree to our Terms of Service and Privacy Policy.
-                </Text>
-              </Box>
             </Flex>
           </Card>
 
           {/* Footer */}
           <Flex direction="column" gap="2" align="center">
-            <Text size="1" color="gray">
+            <Text as="div" size="1" color="gray">
               Need help? Contact support@yourapp.com
             </Text>
-            <Text size="1" color="gray">
+            <Text as="div" size="1" color="gray">
               © {new Date().getFullYear()} Your Company Name. All rights reserved.
             </Text>
           </Flex>

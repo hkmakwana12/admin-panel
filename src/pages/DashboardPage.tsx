@@ -12,12 +12,13 @@ import {
   Avatar
 } from '@radix-ui/themes';
 import {
-  PersonIcon,
-  CubeIcon,
-  ShoppingCartIcon,
-  DollarSignIcon,
-  DownloadIcon
-} from '@radix-ui/react-icons';
+  Users,
+  Package,
+  ShoppingCart,
+  DollarSign,
+  Download,
+  TrendingUp
+} from 'lucide-react';
 import {
   LineChart,
   Line,
@@ -49,7 +50,7 @@ export function DashboardPage() {
             <Text color="gray">Welcome to your admin dashboard</Text>
           </Box>
           <Button disabled>
-            <DownloadIcon />
+            <Download size={16} />
             Download Report
           </Button>
         </Flex>
@@ -82,28 +83,28 @@ export function DashboardPage() {
     {
       title: 'Total Users',
       value: data?.user_stats.total || 0,
-      icon: PersonIcon,
+      icon: Users,
       description: `${data?.user_stats.active || 0} active users`,
       color: 'blue'
     },
     {
       title: 'Total Products',
       value: data?.product_stats.total || 0,
-      icon: CubeIcon,
+      icon: Package,
       description: `${data?.product_stats.published || 0} published`,
       color: 'green'
     },
     {
       title: 'Total Orders',
       value: data?.order_stats.total || 0,
-      icon: ShoppingCartIcon,
+      icon: ShoppingCart,
       description: `${data?.order_stats.pending || 0} pending`,
       color: 'orange'
     },
     {
       title: 'Total Revenue',
       value: `$${(data?.order_stats.total_revenue || 0).toLocaleString()}`,
-      icon: DollarSignIcon,
+      icon: DollarSign,
       description: 'Lifetime revenue',
       color: 'purple'
     },
@@ -119,7 +120,7 @@ export function DashboardPage() {
           </Text>
         </Box>
         <Button>
-          <DownloadIcon />
+          <Download size={16} />
           Download Report
         </Button>
       </Flex>
@@ -140,7 +141,7 @@ export function DashboardPage() {
                   borderRadius: 'var(--radius-3)'
                 }}
               >
-                <stat.icon />
+                <stat.icon size={20} />
               </Flex>
               <Box>
                 <Text as="div" size="2" weight="bold">

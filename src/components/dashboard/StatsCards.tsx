@@ -1,7 +1,7 @@
 // src/components/dashboard/StatsCards.tsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { DashboardStats } from '@/types';
+import type { DashboardStats } from '@/types';
 import { Users, Package, ShoppingCart, DollarSign } from 'lucide-react';
 
 interface StatsCardsProps {

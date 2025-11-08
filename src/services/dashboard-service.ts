@@ -1,6 +1,6 @@
 // src/services/dashboard-service.ts
 import { apiClient } from "../lib/api-client";
-import { DashboardStats } from "../types";
+import type { DashboardStats } from "../types";
 
 export const dashboardService = {
   getStats: async (): Promise<DashboardStats> => {

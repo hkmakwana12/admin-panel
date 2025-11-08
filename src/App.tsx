@@ -5,9 +5,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/query-client';
 import { useAuthStore } from './stores/auth-store';
 import { authService } from './services/auth-service';
-import { AdminLayout } from './components/layout/AdminLayout';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { AdminLayout } from './components/layout/AdminLayout';
+import { UsersPage } from './pages/UsersPage';
+import { UserFormPage } from './pages/UserFormPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -49,7 +51,11 @@ function App() {
             </ProtectedRoute>
           }>
             <Route index element={<DashboardPage />} />
-            <Route path="users" element={<div>Users Page</div>} />
+            <Route path="users">
+              <Route index element={<UsersPage />} />
+              <Route path="create" element={<UserFormPage />} />
+              <Route path="edit/:id" element={<UserFormPage />} />
+            </Route>
             <Route path="products" element={<div>Products Page</div>} />
             <Route path="orders" element={<div>Orders Page</div>} />
             <Route path="analytics" element={<div>Analytics Page</div>} />
