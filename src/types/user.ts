@@ -1,0 +1,11 @@
+// src/types/user.ts
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+  avatar?: string;
+  last_login?: string;
+  created_at: string;
+}
