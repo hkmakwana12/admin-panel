@@ -1,7 +1,10 @@
-export default function DashboardPage() {
+import type { JSX } from "react";
+
+export default function Dashboard(): JSX.Element {
   return (
-    <div className="p-4">
-      <h1>Welcome to the Home Page!</h1>
+    <div>
+      <h1>Dashboard</h1>
+
     </div>
   );
 }
