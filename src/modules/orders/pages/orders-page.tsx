@@ -1,11 +1,11 @@
 import { Plus } from "lucide-react";
 
-import ProductsTable from "../components/products-table";
+import OrdersTable from "../components/orders-table";
 
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
-export default function Products() {
+export default function Orders() {
   const navigate = useNavigate();
 
   return (
@@ -13,17 +13,17 @@ export default function Products() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Products
+          Orders
         </h1>
 
-        <Button className="gap-2" onClick={() => navigate("/products/create")}>
+        <Button className="gap-2" onClick={() => navigate("/orders/create")}>
           <Plus className="h-4 w-4" />
-          Add Product
+          Add Order
         </Button>
       </div>
 
       {/* Table */}
-      <ProductsTable />
+      <OrdersTable />
     </div>
   );
 }

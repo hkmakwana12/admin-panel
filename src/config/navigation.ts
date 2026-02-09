@@ -40,8 +40,8 @@ export const navigation: NavigationConfig = {
       icon: IconFolder,
     },
     {
-      title: "Team",
-      url: "#",
+      title: "Orders",
+      url: "/orders",
       icon: IconChartBar,
     },
   ],

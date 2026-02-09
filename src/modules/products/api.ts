@@ -18,6 +18,8 @@ export const productsApi = {
   getAll: (params: ProductsQuery) =>
     api.get<PaginatedProducts>("/products", { params }),
 
+  getById: (id: number) => api.get<{ data: Product }>(`/products/${id}`),
+
   create: (data: any) => api.post("/products", data),
 
   update: (id: number, data: any) => api.put(`/products/${id}`, data),

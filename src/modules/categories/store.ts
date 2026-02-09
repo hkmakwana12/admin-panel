@@ -93,6 +93,17 @@ export const useCategoriesStore = create<CategoriesState>((set, get) => ({
     });
   },
 
+  fetchCategoryOptions: async () => {
+    const res = await categoriesApi.getAll({
+      page: 1,
+      per_page: 1000, // or /options endpoint
+    });
+
+    set({
+      categories: res.data.data,
+    });
+  },
+
   /* -------------------------------------------------
      CRUD
   ------------------------------------------------- */

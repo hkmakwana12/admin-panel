@@ -15,15 +15,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { useProductsStore } from "../store"
-import type { Product } from "../types"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DataTableColumnHeader } from "@/components/table/data-table-column-header"
 import { useNavigate } from "react-router-dom"
+import { getOrderStatusMeta, getPaymentStatusMeta } from "../constants"
+import { useOrdersStore } from "../store"
+import type { Order } from "../types"
 
-export default function ProductsTable() {
+export default function OrdersTable() {
   const {
-    products,
+    orders,
     loading,
     total,
 
@@ -32,11 +33,11 @@ export default function ProductsTable() {
     sort,
     order,
 
-    fetchProducts,
-    deleteProduct,
+    fetchOrders,
+    deleteOrder,
     setPagination,
     setSorting,
-  } = useProductsStore()
+  } = useOrdersStore()
 
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [deleteId, setDeleteId] = useState<number | null>(null)
@@ -47,7 +48,7 @@ export default function ProductsTable() {
      ✅ FIXED: fetch when ANY server param changes
   ------------------------------------------------- */
   useEffect(() => {
-    fetchProducts()
+    fetchOrders()
   }, [page, perPage, sort, order])
 
   const handleDelete = (id: number) => {
@@ -57,11 +58,11 @@ export default function ProductsTable() {
 
   const confirmDelete = async () => {
     if (!deleteId) return
-    await deleteProduct(deleteId)
+    await deleteOrder(deleteId)
     setConfirmOpen(false)
   }
 
-  const columns: ColumnDef<Product>[] = [
+  const columns: ColumnDef<Order>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -82,43 +83,65 @@ export default function ProductsTable() {
         />
       ),
     },
-
     {
-      accessorKey: "name",
-      enableHiding: false,
+      accessorKey: "order_number",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
+        <DataTableColumnHeader column={column} title="Order #" />
       ),
       cell: ({ row }) => (
-        <span className="font-semibold">{row.original.name}</span>
+        <span className="font-semibold">#{row.original.order_number}</span>
       ),
     },
     {
-      accessorKey: "category_id",
-      header: "Category",
+      accessorKey: "user_id",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="User" />
+      ),
+      cell: ({ row }) => row.original?.user?.name,
+    },
+    {
+      accessorKey: 'items',
+      header: "Items",
+      cell: ({ row }) => row.original.items.length,
+    },
+    {
+      accessorKey: 'total',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Total" />
+      ),
+      cell: ({ row }) => `₹ ${row.original.total_amount.toFixed(2)}`,
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
       cell: ({ row }) => {
+        const meta = getOrderStatusMeta(row.original.status)
 
-        return <span>{row.original?.category?.name ?? "-"}</span>;
+        return (
+          <span className={`px-2 py-1 rounded text-xs ${meta?.color}`}>
+            {meta?.label}
+          </span>
+        )
       },
     },
     {
-      accessorKey: "price",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Price" />
-      ),
-      cell: ({ row }) => `₹ ${row.original.price}`,
-    },
-    {
-      accessorKey: "stock",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Stock" />
-      ),
+      accessorKey: "payment_status",
+      header: "Payment Status",
+      cell: ({ row }) => {
+        const meta = getPaymentStatusMeta(row.original.payment_status)
+
+        return (
+          <span className={`px-2 py-1 rounded text-xs ${meta?.color}`}>
+            {meta?.label}
+          </span>
+        )
+      },
     },
     {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const product = row.original
+        const order = row.original
 
         return (
           <div className="flex justify-end">
@@ -132,13 +155,13 @@ export default function ProductsTable() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                <DropdownMenuItem onClick={() => navigate(`/products/${product.id}/edit`)}>
+                <DropdownMenuItem onClick={() => navigate(`/orders/${order.id}/edit`)}>
                   <Edit /> Edit
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
                   variant="destructive"
-                  onClick={() => handleDelete(product.id)}
+                  onClick={() => handleDelete(order.id)}
                 >
                   <Trash /> Delete
                 </DropdownMenuItem>
@@ -154,7 +177,7 @@ export default function ProductsTable() {
     <>
       <DataTable
         columns={columns}
-        data={products}
+        data={orders}
         page={page}
         perPage={perPage}
         total={total}
@@ -165,7 +188,7 @@ export default function ProductsTable() {
 
       <ConfirmDialog
         open={confirmOpen}
-        title="Delete Product"
+        title="Delete Order"
         message="This action cannot be undone. Are you sure?"
         onClose={() => setConfirmOpen(false)}
         onConfirm={confirmDelete}

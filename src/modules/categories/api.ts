@@ -18,6 +18,11 @@ export const categoriesApi = {
   getAll: (params: CategoriesQuery) =>
     api.get<PaginatedCategories>("/categories", { params }),
 
+  getOptions: () =>
+    api.get("/categories", {
+      params: { page: 1, per_page: 1000 },
+    }),
+
   create: (data: any) => api.post("/categories", data),
 
   update: (id: number, data: any) => api.put(`/categories/${id}`, data),

@@ -12,7 +12,12 @@ import Dashboard from "@/pages/dashboard";
 
 import Categories from "@/modules/categories/pages/categories-page";
 import Users from "@/modules/users/pages/users-page";
+
 import Products from "@/modules/products/pages/products-page";
+import ProductForm from "@/modules/products/pages/product-form";
+
+import Orders from "@/modules/orders/pages/orders-page";
+import OrderForm from "@/modules/orders/pages/order-form";
 
 const router = createBrowserRouter([
   {
@@ -50,7 +55,37 @@ const router = createBrowserRouter([
           },
           {
             path: "/products",
-            element: <Products />,
+            children: [
+              {
+                index: true,
+                element: <Products />,
+              },
+              {
+                path: 'create',
+                element: <ProductForm />
+              },
+              {
+                path: ':id/edit',
+                element: <ProductForm />
+              }
+            ]
+          },
+          {
+            path: "/orders",
+            children: [
+              {
+                index: true,
+                element: <Orders />,
+              },
+              {
+                path: 'create',
+                element: <OrderForm />
+              },
+              {
+                path: ':id/edit',
+                element: <OrderForm />
+              }
+            ]
           },
           {
             path: "/users",
