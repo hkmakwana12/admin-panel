@@ -1,5 +1,6 @@
 import {
   createBrowserRouter,
+  Navigate,
 } from "react-router-dom";
 import AppLayout from "@/layouts/app-layout";
 
@@ -43,7 +44,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/",
-            element: <Home />,
+            element: <Navigate to="/dashboard" />,
           },
           {
             path: "/dashboard",
