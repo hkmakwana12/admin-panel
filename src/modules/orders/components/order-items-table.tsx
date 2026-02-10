@@ -1,4 +1,4 @@
-import { Controller, type Control, type UseFormRegister } from "react-hook-form"
+import { Controller, type Control, type UseFormRegister, type UseFormSetValue } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -24,6 +24,7 @@ interface Props {
   append: any
   remove: any
   products: Product[]
+  setValue: UseFormSetValue<OrderFormData>
 }
 
 export default function OrderItemsTable({
@@ -33,6 +34,7 @@ export default function OrderItemsTable({
   append,
   remove,
   products,
+  setValue
 }: Props) {
   return (
     <div className="space-y-4">
@@ -64,7 +66,21 @@ export default function OrderItemsTable({
 
                 <Select
                   value={String(field.value)}
-                  onValueChange={(v) => field.onChange(Number(v))}
+                  onValueChange={(v) => {
+                    const id = Number(v)
+
+                    field.onChange(id)
+
+                    // ⭐ AUTO SET PRICE
+                    const product = products.find(p => p.id === id)
+
+                    if (product) {
+                      setValue(
+                        `items.${index}.unit_price`,
+                        product.price
+                      )
+                    }
+                  }}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select" />

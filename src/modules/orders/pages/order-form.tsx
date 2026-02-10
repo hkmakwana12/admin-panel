@@ -70,7 +70,12 @@ export default function OrderForm() {
     defaultValues: {
       status: 'pending',
       payment_status: 'pending',
-      items: [],
+      items: [
+        {
+          quantity: 1,
+          unit_price: 0,
+        }
+      ],
       total_amount: 0,
     },
   })
@@ -282,6 +287,7 @@ export default function OrderForm() {
               append={append}
               remove={remove}
               products={products}
+              setValue={setValue}
             />
           </CardContent>
         </Card>

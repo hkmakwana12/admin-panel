@@ -9,7 +9,7 @@ export const productSchema = z.object({
 
   stock: z.coerce.number().int().min(0, "Stock must be 0 or more"),
 
-  category_id: z.coerce.number().min(1, "Category required"),
+  category_id: z.coerce.number("Category required").min(1, "Category required"),
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;

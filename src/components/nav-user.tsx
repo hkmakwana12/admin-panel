@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 import {
   IconCreditCard,
   IconLogout,
@@ -20,10 +22,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { Button } from "@/components/ui/button";
+
 import { AuthContext } from "@/auth/auth-context";
-import { useContext } from "react";
+
 import { getInitials } from "@/utils/getInitials";
-import { Button } from "./ui/button";
 
 export function NavUser() {
   const { user, logout } = useContext(AuthContext);

@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom"
 import { getOrderStatusMeta, getPaymentStatusMeta } from "../constants"
 import { useOrdersStore } from "../store"
 import type { Order } from "../types"
+import { Badge } from "@/components/ui/badge"
 
 export default function OrdersTable() {
   const {
@@ -118,9 +119,9 @@ export default function OrdersTable() {
         const meta = getOrderStatusMeta(row.original.status)
 
         return (
-          <span className={`px-2 py-1 rounded text-xs ${meta?.color}`}>
+          <Badge className={`${meta?.color}`}>
             {meta?.label}
-          </span>
+          </Badge>
         )
       },
     },
@@ -131,9 +132,9 @@ export default function OrdersTable() {
         const meta = getPaymentStatusMeta(row.original.payment_status)
 
         return (
-          <span className={`px-2 py-1 rounded text-xs ${meta?.color}`}>
+          <Badge className={`${meta?.color}`}>
             {meta?.label}
-          </span>
+          </Badge>
         )
       },
     },
